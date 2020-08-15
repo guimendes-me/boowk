@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager
 from blacklist import BLACKLIST
 
 app = Flask(__name__)
+app.run(host='0.0.0.0', port=8080)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stocker.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'ArrowCaraiLoko'
