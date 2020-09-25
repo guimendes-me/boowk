@@ -1,14 +1,23 @@
 from flask import Flask, jsonify
 from flask_restful import Api
+from resources.author import Author, Authors
 from resources.book import Books, Book
+from resources.edtion import Edtion, Edtions
+from resources.book_author import BooksAuthors
 from resources.user import User, UserRegister, UserAuth, UserLogout
 from flask_jwt_extended import JWTManager
+from db import Database
 from blacklist import BLACKLIST
 
 app = Flask(__name__)
-app.run(host='0.0.0.0', port=8080)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///stocker.db'
+#app.run(host='0.0.0.0', port=8080)
+
+rdbms = ''
+db_config = Database(rdbms)
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///boowk.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = db_config.getconfig()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
 app.config['JWT_SECRET_KEY'] = 'ArrowCaraiLoko'
 app.config['JWT_BLACKLIST_ENABLED'] = True
 
@@ -28,14 +37,29 @@ def check_blacklist(token):
 def revoke_token():
     return jsonify({'mensage': 'You have been logged out.'}), 401
 
+#book resources
 api.add_resource(Books, '/books')       
-api.add_resource(Book, '/books/<int:book_id>')       
+api.add_resource(BooksAuthors, '/books')       
+api.add_resource(Book, '/books/<string:id_book>')   
+
+#users resources
 api.add_resource(User, '/users/<string:login>')       
 api.add_resource(UserRegister, '/users/register')    
 api.add_resource(UserAuth, '/authorization')    
 api.add_resource(UserLogout, '/logout') 
 
-if __name__ == '__main__':
+#author resources
+api.add_resource(Authors, '/authors')
+api.add_resource(Author, '/authors')    
+
+#edtions resources
+api.add_resource(Edtions, '/edtions')
+api.add_resource(Edtion, '/edtions')    
+
+#api.add_resource(BooksAuthors, '/books')
+
+
+if __name__ == "__main__":
     from db import database
-    database.init_app(app)
+    database.init_app(app)    
     app.run(debug=True)

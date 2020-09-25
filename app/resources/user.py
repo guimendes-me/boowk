@@ -41,7 +41,7 @@ class UserRegister(Resource):
         data = arguments.parse_args()    
 
         if UserModel.find(data['login']):
-            return {'mensage': "The login '{}' alredy exists".format(data['login'])}
+            return {'mensage': "The login '{}' alredy exists".format(data['login'])}, 203
 
         user = UserModel(**data)
         user.save()
@@ -58,7 +58,7 @@ class UserAuth(Resource):
         
         if user and safe_str_cmp(user.password, dados['password']):
             acess_token = create_access_token(identity=user.user_id)
-            return {'acess_token': acess_token}, 200
+            return {'access_token': acess_token}, 200
         
         return {'mensage': 'The username or password is incorrect.'}, 401
 
