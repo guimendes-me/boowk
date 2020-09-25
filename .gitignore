@@ -5,3 +5,4 @@ vscode.code-workspace
 /winenv/
 testes/teste.py
 testes/tst.py
+app/boowk.db
