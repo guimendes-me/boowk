@@ -14,7 +14,7 @@ class AuthorModel(database.Model):
     id_author = database.Column(database.String(36), primary_key=True, default=generate_uuid)
     firstname = database.Column(database.String(20))
     middlename = database.Column(database.String(20))
-    lastname = database.Column(database.String(20))
+    lastname = database.Column(database.String(20))    
 
 
     def __init__(self, firstname, middlename, lastname):  
@@ -27,19 +27,19 @@ class AuthorModel(database.Model):
                 'id_author': self.id_author,
                 'firstname': self.firstname,
                 'middlename': self.middlename,
-                'lastname': self.lastname
+                'lastname': self.lastname,                                
         }
 
     @classmethod
     def find(cls, key, field='firstname', like=True):        
-        #book = cls.query.filter_by(id_book = id_book).first()
+        #author = cls.query.filter_by(id_author = id_author).first()
         
         if field=='firstname' and like==True:
-            book = cls.query.filter(AuthorModel.firstname.like(f'%{key}%')).first()
+            author = cls.query.filter(AuthorModel.firstname.like(f'%{key}%')).first()
         if field=='id_author':
-            book = cls.query.filter_by(id_author=key).first()
-        if book:
-            return book
+            author = cls.query.filter_by(id_author=key).first()
+        if author:
+            return author
         return None
         
     

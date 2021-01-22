@@ -9,7 +9,7 @@ class EdtionModel(database.Model):
     __tablename__ = 'tb_edtion'
 
     #id_edtion = database.Column(database.String(36), primary_key='True')    
-    id_edtion = database.Column(database.String, name="id_edtion", primary_key=True, default=generate_uuid)
+    id_edtion = database.Column(database.String(36), name="id_edtion", primary_key=True, default=generate_uuid)
     isbn = database.Column(database.String(13))
     nedtion = database.Column(database.Integer)
     volume = database.Column(database.Integer)

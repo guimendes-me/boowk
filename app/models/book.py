@@ -55,8 +55,7 @@ class BookModel(database.Model):
         database.session.add(self)
         database.session.commit()
 
-    def update(self, title, author):
-        self.id_book = id_book
+    def update(self, title, subtitle, booktype):        
         self.title = title
         self.subtitle = subtitle
         self.booktype = booktype

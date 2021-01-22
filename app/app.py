@@ -5,6 +5,8 @@ from resources.book import Books, Book
 from resources.edtion import Edtion, Edtions
 from resources.book_author import BooksAuthors
 from resources.user import User, UserRegister, UserAuth, UserLogout
+from resources.estantevirtual import EVBook, EVBooks
+from resources.auth import AuthMeli
 from flask_jwt_extended import JWTManager
 from db import Database
 from blacklist import BLACKLIST
@@ -15,7 +17,8 @@ app = Flask(__name__)
 rdbms = ''
 db_config = Database(rdbms)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///boowk.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = db_config.getconfig()
+#app.config['SQLALCHEMY_DATABASE_URI'] = db_config.getconfig()
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:admxz.82@35.202.33.13:3306/boowk'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['JWT_SECRET_KEY'] = 'ArrowCaraiLoko'
@@ -37,6 +40,12 @@ def check_blacklist(token):
 def revoke_token():
     return jsonify({'mensage': 'You have been logged out.'}), 401
 
+#auth resource
+api.add_resource(AuthMeli, '/auth')
+
+#estantevirtual resources
+api.add_resource(EVBooks, '/estantevirtual')
+
 #book resources
 api.add_resource(Books, '/books')       
 api.add_resource(BooksAuthors, '/books')       
@@ -50,11 +59,11 @@ api.add_resource(UserLogout, '/logout')
 
 #author resources
 api.add_resource(Authors, '/authors')
-api.add_resource(Author, '/authors')    
+api.add_resource(Author, '/authors/<string:id_author>')    
 
 #edtions resources
 api.add_resource(Edtions, '/edtions')
-api.add_resource(Edtion, '/edtions')    
+api.add_resource(Edtion, '/edtions/<string:id_edtion>')    
 
 #api.add_resource(BooksAuthors, '/books')
 

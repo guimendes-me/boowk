@@ -54,27 +54,35 @@ class Book(Resource):
 
     
     @jwt_required
-    def put(self, book_id):
+    def put(self, id_book):
 
         data = Book.arguments.parse_args()
-        data =  BookModel(book_id, **data)
-
-        find_book = BookModel.find(book_id)                
-
-        if find_book:
-            find_book.update(**data)
-            find_book.save()
-            return find_book.json(), 200 #ok
         
-        new_book = BookModel(book_id, **data)
+        book_obj =  BookModel(**data)
+
+        #data = BookModel.find(field='id_book', key=id_book)                
         
         try:
-            new_book.save()
+            
+            if book_obj.find(field='id_book', key=id_book):
+                book_obj.update(**data)
+                book_obj.save()
+                return book_obj.json(), 200 #ok
+            else:
+
+                if book_obj.find(book_obj.title):
+                    book_obj = book_obj.find(book_obj.title)
+                    return  book_obj.json(), 409
+                else:
+                    book_obj.save()
+                    return book_obj.json(), 200
         except:
             return {'mensage': 'An internal error ocurred trying to save book.'}, 500
-        return find_book.json()
+            
         
-    #@jwt_required
+
+        
+    @jwt_required
     def delete(self, id_book):
         
         book = BookModel.find(field='id_book', key=id_book)

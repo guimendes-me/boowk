@@ -31,6 +31,41 @@ class Author(Resource):
             try:
                 author.save()
             except:
-                return {'mensage': 'An internal error ocurred trying to save book.'}, 500
+                return {'mensage': 'An internal error ocurred trying to save author.'}, 500
             return author.json()
 
+    @jwt_required
+    def put(self, id_author):
+
+        data = Author.arguments.parse_args()
+        data =  AuthorModel(id_author, **data)
+
+        find_author = AuthorModel.find(id_author)                
+
+        if find_author:
+            find_author.update(**data)
+            find_author.save()
+            return find_author.json(), 200 #ok
+        
+        new_author = AuthorModel(id_author, **data)
+        
+        try:
+            new_author.save()
+        except:
+            return {'mensage': 'An internal error ocurred trying to save author.'}, 500
+        return find_author.json()
+        
+    @jwt_required
+    def delete(self, id_author):
+        
+        author = AuthorModel.find(field='id_author', key=id_author)
+
+        if author:
+            try:
+                author.delete()
+            except:
+                return {'mensage': 'An error ocurred trying to delete author.'}, 500
+                
+            return {'mensage': 'Autor deletado'}
+
+        return {'mensage': 'Book not found'}, 404       

@@ -2,8 +2,8 @@ import requests
 import json
 
 data = {
-    "login": "gmendes.monteiro",
-    "password": "admxz.82",
+    "login": "gmendes",
+    "password": "teste123",
     "firstname": "Guilherme",
     "lastname": "Monteiro"
 }
@@ -90,6 +90,11 @@ edtion_json = {
     }
 
 #print(edtion_json)
+
+
+post_edtion = requests.post(url='http://127.0.0.1:5000/edtions', data=edtion_json, headers=headers)
+print(post_edtion.status_code)
+print(post_edtion.json())
 
 
 post_edtion = requests.post(url='http://127.0.0.1:5000/edtions', data=edtion_json, headers=headers)

@@ -16,6 +16,7 @@ class BooksAuthors(Resource):
     arguments.add_argument('booktype', type=str, required=True)    
     arguments.add_argument('authors', type=str, action='append', required=True)
 
+    @jwt_required
     def post(self):
 
         items = self.arguments.parse_args()
@@ -35,22 +36,24 @@ class BooksAuthors(Resource):
         
         if book_obj.find(book_obj.title):
             book_obj = book_obj.find(book_obj.title)
+            return {'book': book_obj.json()}, 409
+
         else:
             book_obj.save()
+            for author_obj in authors_obj:
 
-        for author_obj in authors_obj:
-
-            if not author_obj.find(author_obj.firstname):
-                author_obj.save()                  
-            else:
-                author_obj = author_obj.find(author_obj.firstname)
+                if not author_obj.find(author_obj.firstname):
+                    author_obj.save()                  
+                else:
+                    author_obj = author_obj.find(author_obj.firstname)
+                
+                book_author_obj = BookAuthorModel(book_obj, author_obj)
+                            
+                if not book_author_obj.find():
+                    book_author_obj.save()  
             
-            book_author_obj = BookAuthorModel(book_obj, author_obj)
-                        
-            if not book_author_obj.find():
-                book_author_obj.save()  
         
-        return {'book': book_obj.json()}, 200
+            return {'book': book_obj.json()}, 200
             
             #book_author_obj.save()
              

@@ -77,6 +77,30 @@ class Edtions(Resource):
         return {'edtions': edtions}
 
 
+    @jwt_required
+    def post(self):
+
+        """
+        edtion_id = str(uuid.uuid1())
+        
+        if EdtionModel.find(edtion_id):
+            return {"mensage": "Edtion id '{}' already exists.".format(edtion_id)}, 200
+        
+
+        while EdtionModel.find(edtion_id):
+            edtion_id = str(uuid.uuid1())
+        """
+
+        data = Edtion.arguments.parse_args()
+        edtion = EdtionModel(**data)
+        try:
+            edtion.save()
+        except:
+            return {'mensage': 'An internal error ocurred trying to save book.'}, 500
+        return edtion.json()
+
+
+
 class Edtion(Resource):
 
     arguments = reqparse.RequestParser()    
@@ -100,32 +124,12 @@ class Edtion(Resource):
     #arguments.add_argument('author', type=str, required=True, help=" The field 'author' connot be left blank")
 
 
-    def get(self, edtion_id):        
-        edtion = EdtionModel.find(edtion_id)
+    def get(self, id_edtion):        
+        edtion = EdtionModel.find(id_edtion)
         if edtion:
             return edtion.json()
 
         return {'message': 'Edtion not found.'}, 404
 
 
-    @jwt_required
-    def post(self):
-
-        """
-        edtion_id = str(uuid.uuid1())
-        
-        if EdtionModel.find(edtion_id):
-            return {"mensage": "Edtion id '{}' already exists.".format(edtion_id)}, 200
-        
-
-        while EdtionModel.find(edtion_id):
-            edtion_id = str(uuid.uuid1())
-        """
-
-        data = Edtion.arguments.parse_args()
-        edtion = EdtionModel(**data)
-        try:
-            edtion.save()
-        except:
-            return {'mensage': 'An internal error ocurred trying to save book.'}, 500
-        return edtion.json()
+    
