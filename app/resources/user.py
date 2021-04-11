@@ -10,6 +10,12 @@ arguments.add_argument('password', type=str, required=True, help=" The field 'pa
 arguments.add_argument('firstname', type=str)
 arguments.add_argument('lastname', type=str)
         
+
+class Users(Resource):
+    
+    def get(self):
+        return {'message': 'Username is required'}
+
 class User(Resource):
 
     def get(self, username):        

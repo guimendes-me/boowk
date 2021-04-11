@@ -1,6 +1,7 @@
 import requests
 import json
 
+#dicionário com as informações de autenticação
 data = {
     "username": "gmonteiro",
     "password": "teste123",
@@ -8,44 +9,45 @@ data = {
     "lastname": "Monteiro",
 }
 
+#dicionário que sera passado na requisição do token
 credentials = {
     "username": data["username"],
     "password": data["password"]
 }
 
-auth = requests.post('http://127.0.0.1:5000/authorization', data=credentials)
+#post na endpoint que valida as credenciais e retona o token
+auth = requests.post('http://34.95.216.159:8080/authorization', data=credentials)
 print(auth.status_code)
 
+#caso o usuário não exista (status code 401), ele é criado no endpoint register e em seguida o token é recuperado
 if auth.status_code == 401:    
-    response = requests.post(url='http://127.0.0.1:5000/users/register', data=data)
-    auth = requests.post('http://127.0.0.1:5000/authorization', data=credentials)
+    response = requests.post(url='http://34.95.216.159:8080/users/register', data=data)
+    auth = requests.post('http://34.95.216.159:8080/authorization', data=credentials)
 
+#exibe o token que foi colocado no cabeçalho da próxima requisição
 access_token = auth.json()['access_token']
 headers={'Authorization': f'Bearer {access_token}' }
 print(headers)
 
+
+#lista que irá armazenar a reposta
 authors = []
 
+#lista de autores que será enviada
 authors_json = {
             "firstname": "Brad",                
             "lastname": "Stone"
-        }, {
-            "firstname": "Seth",             
-            "lastname": "Godin"
         }
-
-
-
 
 for author_json in authors_json:
     print(author_json)
-    post_author = requests.post(url='http://127.0.0.1:5000/authors', data=author_json, headers=headers)
+    post_author = requests.post(url='http://34.95.216.159:8080/authors', data=author_json, headers=headers)
     print(post_author.status_code)
     print(post_author.json())
     authors.append(post_author.json())
 
 
-
+#após ter cadastrado os autores, é possível cadastrar o livro e a lista de autores do mesmo
 book_json = {
     "title": "A loja de tudo",
     "subtitle" : "Jeff Bezos e a era da Amazon",
@@ -56,14 +58,14 @@ book_json = {
 
 print(book_json)
 
-post_book = requests.post(url='http://127.0.0.1:5000/books', json=book_json, headers=headers)
+post_book = requests.post(url='http://34.95.216.159:8080/books', json=book_json, headers=headers)
 print(post_book.status_code)
 print(post_book.json())
 
 
 
-
-edtions = requests.get('http://127.0.0.1:5000/edtions')
+#após efetuar o cadastro do livro, usamos o seu id para efetuar o cadastro da edição
+edtions = requests.get('http://34.95.216.159:8080/edtions')
 edtion_json = {
     "isbn": "9788551004739",
     "nedtion": 1,
@@ -89,7 +91,7 @@ edtion_json = {
 #print(edtion_json)
 
 
-post_edtion = requests.post(url='http://127.0.0.1:5000/edtions', data=edtion_json, headers=headers)
+post_edtion = requests.post(url='http://34.95.216.159:8080/edtions', data=edtion_json, headers=headers)
 print(post_edtion.status_code)
 print(post_edtion.json())
 

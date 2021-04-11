@@ -4,7 +4,7 @@ from resources.author import Author, Authors
 from resources.book import Books, Book
 from resources.edtion import Edtion, Edtions
 from resources.book_author import BooksAuthors
-from resources.user import User, UserRegister, UserAuth, UserLogout
+from resources.user import User, Users, UserRegister, UserAuth, UserLogout
 from resources.estantevirtual import EVBook, EVBooks
 from resources.seller import Sellers
 from resources.auth import AuthMeli
@@ -58,6 +58,7 @@ api.add_resource(BooksAuthors, '/books')
 api.add_resource(Book, '/books/<string:id_book>')   
 
 #users resources
+api.add_resource(Users, '/users') 
 api.add_resource(User, '/users/<string:username>')       
 api.add_resource(UserRegister, '/users/register')    
 api.add_resource(UserAuth, '/authorization')    
