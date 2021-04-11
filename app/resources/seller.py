@@ -69,7 +69,7 @@ class Sellers(Resource):
         return {'sellers': sellers}
 
 
-    #@jwt_required
+    @jwt_required
     def post(self):
         data = self.arguments.parse_args()        
         seller = SellerModel(**data)
