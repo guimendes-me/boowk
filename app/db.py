@@ -3,6 +3,7 @@ import sqlite3
 
 database = SQLAlchemy()
 
+
 class Database(object):
     
     connectstring: str

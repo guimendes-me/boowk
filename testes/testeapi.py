@@ -2,14 +2,14 @@ import requests
 import json
 
 data = {
-    "login": "gmendes",
+    "username": "gmonteiro",
     "password": "teste123",
     "firstname": "Guilherme",
-    "lastname": "Monteiro"
+    "lastname": "Monteiro",
 }
 
 credentials = {
-    "login": data["login"],
+    "username": data["username"],
     "password": data["password"]
 }
 
@@ -24,8 +24,6 @@ access_token = auth.json()['access_token']
 headers={'Authorization': f'Bearer {access_token}' }
 print(headers)
 
-
-
 authors = []
 
 authors_json = {
@@ -38,7 +36,7 @@ authors_json = {
 
 
 
-'''
+
 for author_json in authors_json:
     print(author_json)
     post_author = requests.post(url='http://127.0.0.1:5000/authors', data=author_json, headers=headers)
@@ -46,7 +44,6 @@ for author_json in authors_json:
     print(post_author.json())
     authors.append(post_author.json())
 
-'''
 
 
 book_json = {
@@ -96,7 +93,3 @@ post_edtion = requests.post(url='http://127.0.0.1:5000/edtions', data=edtion_jso
 print(post_edtion.status_code)
 print(post_edtion.json())
 
-
-post_edtion = requests.post(url='http://127.0.0.1:5000/edtions', data=edtion_json, headers=headers)
-print(post_edtion.status_code)
-print(post_edtion.json())

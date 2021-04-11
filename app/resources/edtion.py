@@ -1,8 +1,10 @@
 from flask_restful import Resource, reqparse
 from models.edtion import EdtionModel
 from flask_jwt_extended import jwt_required
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import text
 import uuid
-import sqlite3
+db = SQLAlchemy()
 
 path_parameters =  reqparse.RequestParser()
 path_parameters.add_argument('isbn', type=str)
@@ -30,24 +32,21 @@ class Edtions(Resource):
  
 
     def get(self):
-        
-        connection = sqlite3.connect('boowk.db')
-        cursor = connection.cursor()
+
 
         data = path_parameters.parse_args()
         valid_data = {key:data[key] for key in data if data[key] is not None}
         parameters = normalize_path(**valid_data)
 
         if not parameters.get('isbn'):
-            query = "SELECT * FROM tb_edtion LIMIT ? OFFSET ?"
-            filters = tuple(parameters[chave] for chave in parameters)
-            #filters = (parameters['limit'], parameters['offset'])
-            result = cursor.execute(query, filters)
+            query = "SELECT * FROM tb_edtion LIMIT :limit OFFSET :offset"
+            #filters = tuple(parameters[chave] for chave in parameters)
+            result = db.engine.execute(text(query), limit=parameters['limit'], offset=parameters['offset'])
             
         else: 
-            query = "SELECT * FROM tb_edtion WHERE isbn = ? LIMIT ? OFFSET ?"
-            filters = tuple(parameters[chave] for chave in parameters)
-            result = cursor.execute(query, filters)
+            query = "SELECT * FROM tb_edtion WHERE isbn = :isbn LIMIT :limit OFFSET :offset"
+            #filters = tuple(parameters[chave] for chave in parameters)
+            result = db.engine.execute(text(query), isbn=parameters['isbn'], limit=parameters['limit'], offset=parameters['offset'])
 
         edtions = []
         
@@ -132,4 +131,17 @@ class Edtion(Resource):
         return {'message': 'Edtion not found.'}, 404
 
 
-    
+    @jwt_required
+    def delete(self, id_edtion):
+        
+        edtion = EdtionModel.find(field='id_edtion', key=id_edtion)
+
+        if edtion:
+            try:
+                edtion.delete()
+            except:
+                return {'mensage': 'An error ocurred trying to delete edtion.'}, 500
+                
+            return {'mensage': 'Edição deletado'}
+
+        return {'mensage': 'Edtion not found'}, 404             

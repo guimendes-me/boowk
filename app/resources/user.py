@@ -5,24 +5,24 @@ from models.user import UserModel
 from blacklist import BLACKLIST
 
 arguments = reqparse.RequestParser()
-arguments.add_argument('login', type=str, required=True, help=" The field 'login' connot be left blank")
+arguments.add_argument('username', type=str, required=True, help=" The field 'username' connot be left blank")
 arguments.add_argument('password', type=str, required=True, help=" The field 'password' connot be left blank")
 arguments.add_argument('firstname', type=str)
 arguments.add_argument('lastname', type=str)
         
 class User(Resource):
 
-    def get(self, login):        
-        user = UserModel.find(login)
+    def get(self, username):        
+        user = UserModel.find(username)
         if user:
             return user.json()
 
         return {'message': 'User not found.'}, 404
         
     @jwt_required        
-    def delete(self, login):
+    def delete(self, username):
         
-        user = UserModel.find(login)
+        user = UserModel.find(username)
 
         if user:
             try:
@@ -40,13 +40,13 @@ class UserRegister(Resource):
     def post(self):
         data = arguments.parse_args()    
 
-        if UserModel.find(data['login']):
-            return {'mensage': "The login '{}' alredy exists".format(data['login'])}, 203
+        if UserModel.find(data['username']):
+            return {'mensage': "The username '{}' alredy exists".format(data['username'])}, 203
 
         user = UserModel(**data)
         user.save()
         
-        return {'mensage': "The user '{}' created sucessfully!".format(data['login'])}, 201
+        return {'mensage': "The user '{}' created sucessfully!".format(data['username'])}, 201
 
 
 class UserAuth(Resource):        
@@ -54,7 +54,7 @@ class UserAuth(Resource):
     @classmethod
     def post(cls):
         dados = arguments.parse_args()
-        user = UserModel.find(dados['login'])
+        user = UserModel.find(dados['username'])
         
         if user and safe_str_cmp(user.password, dados['password']):
             acess_token = create_access_token(identity=user.user_id)

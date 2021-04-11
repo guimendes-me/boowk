@@ -44,11 +44,13 @@ class BookModel(database.Model):
         
         if field=='title' and like==True:
             book = cls.query.filter(BookModel.title.like(f'%{key}%')).first()
-        if field=='id_book':
+        if field=='id_book':            
+            #book = cls.query.filter(BookModel.id_book.in_(key)).all()            
             book = cls.query.filter_by(id_book=key).first()
         if book:
             return book
-        return None
+        else:
+            return None
         
     
     def save(self):           
@@ -63,4 +65,4 @@ class BookModel(database.Model):
     def delete(self):
         database.session.delete(self)
         database.session.commit()
-        return {"mensage": "Book not found"}            
+        return {"mensage": "Book deleted"}            

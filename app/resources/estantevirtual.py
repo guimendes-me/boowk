@@ -7,7 +7,7 @@ import uuid
 class EVBooks(Resource):
 
     arguments = reqparse.RequestParser()            
-    arguments.add_argument('uuid_ev', type=str, required=True, help=" The field 'titulo' connot be left blank")
+    arguments.add_argument('uuid_ev', type=str, required=True, help=" The field 'titulo' connot be left blank")    
     arguments.add_argument('erro', type=str, required=False)
     arguments.add_argument('isbn_issn', type=str, required=False)
     arguments.add_argument('autor', type=str, required=False)
@@ -40,6 +40,7 @@ class EVBooks(Resource):
     arguments.add_argument('seller', type=str, required=False)
     
     
+    #@jwt_required
     def get(self):
         return {'books': [book.json() for book in EVBookModel.query.all()]}
     

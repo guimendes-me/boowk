@@ -9,14 +9,14 @@ max_rows = ws.max_row
 
 
 data = {
-    "login": "gmendes",
+    "username": "sebolinhapaulista",
     "password": "teste123",
     "firstname": "Guilherme",
     "lastname": "Monteiro"
 }
 
 credentials = {
-    "login": data["login"],
+    "username": data["username"],
     "password": data["password"]
 }
 
@@ -43,7 +43,7 @@ for i in range(2, max_rows):
         "editora": ws.cell(row=i, column=6).value,
         "ano": ws.cell(row=i, column=7).value,
         "estante": ws.cell(row=i, column=8).value,
-        "preco": ws.cell(row=i, column=9).value,
+        "preco": ws.cell(row=i, column=9).value.replace(',', '.'),
         "conservacao": ws.cell(row=i, column=10).value,
         "peso": ws.cell(row=i, column=11).value,
         "tipo_publicacao": ws.cell(row=i, column=12).value,
@@ -71,5 +71,3 @@ for i in range(2, max_rows):
     post_edtion = requests.post(url='http://127.0.0.1:5000/estantevirtual', data=data, headers=headers)
     print(post_edtion.status_code)
     print(post_edtion.json())
-    
-    

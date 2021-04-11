@@ -7,6 +7,7 @@ from resources.book_author import BooksAuthors
 from resources.user import User, UserRegister, UserAuth, UserLogout
 from resources.estantevirtual import EVBook, EVBooks
 from resources.auth import AuthMeli
+from resources.credential import Credential, Credentials
 from flask_jwt_extended import JWTManager
 from db import Database
 from blacklist import BLACKLIST
@@ -18,7 +19,7 @@ rdbms = ''
 db_config = Database(rdbms)
 #app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///boowk.db'
 #app.config['SQLALCHEMY_DATABASE_URI'] = db_config.getconfig()
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:admxz.82@35.202.33.13:3306/boowk'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://boowk:admxz.82@34.95.138.201:3306/boowk'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 app.config['JWT_SECRET_KEY'] = 'ArrowCaraiLoko'
@@ -43,6 +44,10 @@ def revoke_token():
 #auth resource
 api.add_resource(AuthMeli, '/auth')
 
+#credentials resouce
+api.add_resource(Credential, '/credentials/<string:username>')
+api.add_resource(Credentials, '/credentials')
+
 #estantevirtual resources
 api.add_resource(EVBooks, '/estantevirtual')
 
@@ -52,7 +57,7 @@ api.add_resource(BooksAuthors, '/books')
 api.add_resource(Book, '/books/<string:id_book>')   
 
 #users resources
-api.add_resource(User, '/users/<string:login>')       
+api.add_resource(User, '/users/<string:username>')       
 api.add_resource(UserRegister, '/users/register')    
 api.add_resource(UserAuth, '/authorization')    
 api.add_resource(UserLogout, '/logout') 

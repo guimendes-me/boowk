@@ -53,11 +53,4 @@ class BooksAuthors(Resource):
                     book_author_obj.save()  
             
         
-            return {'book': book_obj.json()}, 200
-            
-            #book_author_obj.save()
-             
-            
-        #return {'title': items['title'], 'subtitle': items['subtitle'], 'authors': items}
-        #return {'book': book_obj.json(), 'authors': authors_json}
-        #return {'book': book_obj.json(), 'teste': author_obj.json()}
+            return {'book': book_obj.json()}, 200        
