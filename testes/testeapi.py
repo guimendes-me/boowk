@@ -2,6 +2,9 @@ import requests
 import json
 
 #dicionário com as informações de autenticação
+
+base_url='http://34.95.216.159:8080'
+
 data = {
     "username": "gmonteiro",
     "password": "teste123",
@@ -16,13 +19,13 @@ credentials = {
 }
 
 #post na endpoint que valida as credenciais e retona o token
-auth = requests.post('http://34.95.216.159:8080/authorization', data=credentials)
+auth = requests.post(f'{base_url}/authorization', data=credentials)
 print(auth.status_code)
 
 #caso o usuário não exista (status code 401), ele é criado no endpoint register e em seguida o token é recuperado
 if auth.status_code == 401:    
-    response = requests.post(url='http://34.95.216.159:8080/users/register', data=data)
-    auth = requests.post('http://34.95.216.159:8080/authorization', data=credentials)
+    response = requests.post(url=f'{base_url}/users/register', data=data)
+    auth = requests.post(f'{base_url}/authorization', data=credentials)
 
 #exibe o token que foi colocado no cabeçalho da próxima requisição
 access_token = auth.json()['access_token']
@@ -41,7 +44,7 @@ authors_json = {
 
 for author_json in authors_json:
     print(author_json)
-    post_author = requests.post(url='http://34.95.216.159:8080/authors', data=author_json, headers=headers)
+    post_author = requests.post(url=f'{base_url}/authors', data=author_json, headers=headers)
     print(post_author.status_code)
     print(post_author.json())
     authors.append(post_author.json())
@@ -58,14 +61,14 @@ book_json = {
 
 print(book_json)
 
-post_book = requests.post(url='http://34.95.216.159:8080/books', json=book_json, headers=headers)
+post_book = requests.post(url=f'{base_url}/books', json=book_json, headers=headers)
 print(post_book.status_code)
 print(post_book.json())
 
 
 
 #após efetuar o cadastro do livro, usamos o seu id para efetuar o cadastro da edição
-edtions = requests.get('http://34.95.216.159:8080/edtions')
+edtions = requests.get(f'{base_url}/edtions')
 edtion_json = {
     "isbn": "9788551004739",
     "nedtion": 1,
@@ -91,7 +94,7 @@ edtion_json = {
 #print(edtion_json)
 
 
-post_edtion = requests.post(url='http://34.95.216.159:8080/edtions', data=edtion_json, headers=headers)
+post_edtion = requests.post(url=f'{base_url}/edtions', data=edtion_json, headers=headers)
 print(post_edtion.status_code)
 print(post_edtion.json())
 

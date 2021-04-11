@@ -34,7 +34,7 @@ class Sellers(Resource):
     arguments = reqparse.RequestParser()    
     arguments.add_argument('url', type=str, required=True, help=" The field 'url' connot be left blank")        
 
-    @jwt_required
+    #@jwt_required
     def get(self):
 
         data = path_parameters.parse_args()
@@ -63,7 +63,7 @@ class Sellers(Resource):
         sellers = []
 
         for row in result:     
-            sellermodel = SellerModel.find(url)
+            sellermodel = SellerModel.find(row[0])
             sellers.append(sellermodel.json())
             
         return {'sellers': sellers}
