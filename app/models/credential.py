@@ -4,7 +4,7 @@ from cryptography.fernet import Fernet
 
 
 class CredentialModel(database.Model):
-    __tablename__ = 'tb_credentials'
+    __tablename__ = 'tb_credential'
 
     id_credential = database.Column(database.Integer, primary_key='True')
     fk_username = database.Column(database.String(36), database.ForeignKey('tb_user.username'), index=True)

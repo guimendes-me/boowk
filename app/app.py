@@ -6,6 +6,7 @@ from resources.edtion import Edtion, Edtions
 from resources.book_author import BooksAuthors
 from resources.user import User, UserRegister, UserAuth, UserLogout
 from resources.estantevirtual import EVBook, EVBooks
+from resources.seller import Sellers
 from resources.auth import AuthMeli
 from resources.credential import Credential, Credentials
 from flask_jwt_extended import JWTManager
@@ -70,7 +71,8 @@ api.add_resource(Author, '/authors/<string:id_author>')
 api.add_resource(Edtions, '/edtions')
 api.add_resource(Edtion, '/edtions/<string:id_edtion>')    
 
-#api.add_resource(BooksAuthors, '/books')
+#sellers resources
+api.add_resource(Sellers, '/sellers')
 
 
 if __name__ == "__main__":

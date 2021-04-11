@@ -8,7 +8,7 @@ class EVBookModel(database.Model):
     def generate_uuid(self):
         return str(uuid.uuid1())
 
-    __tablename__ = 'tb_evestantevirtual'
+    __tablename__ = 'tb_estantevirtual'
     uuid_ev = database.Column(database.String(40), primary_key=True)
     erro = database.Column(database.String(100))
     isbn_issn = database.Column(database.String(100))
